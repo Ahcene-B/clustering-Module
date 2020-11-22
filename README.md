@@ -12,6 +12,11 @@ Experiments were done with the following package versions for Python 3.8.3:
 Note that dkm.py requires an earlier version of Tensorflow
  - Tensorflow (`tensorflow`) 1.15.0.
  
+## Datasets
+
+Before all, please download the [[10x_73k files]](https://drive.google.com/open?id=1XnGkSamF5DiwnpHFG0OexmoqAwe27ucR) into the `data` folder.
+The datasets will be generated using `python make_datsets.py`
+ 
 ## Usage
 
 To train the clustering module (CM) on a dataset $DATASET with $INITIALIZATION={rand|pre} (random or pretrained) initialization:  
@@ -32,4 +37,4 @@ That archive contains 12 files:
     - `kari`,`knmi`,`kacc` Adjusted Rand index, Normalized Mutual Information and Accuracy of the predicted label by k-means (`klbl`),
     - `epc` Duration of the training.
 
-To train DKM, `dkm.py` accordingly to the indications provided in the [https://github.com/MaziarMF/deep-k-means](authors' repository).
+To train DKM, `dkm.py` accordingly to the indications provided in the [[authors' repository]](https://github.com/MaziarMF/deep-k-means).
