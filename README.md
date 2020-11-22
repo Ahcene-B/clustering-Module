@@ -14,7 +14,7 @@ Note that dkm.py requires an earlier version of Tensorflow
  
 ## Datasets
 
-Before all, please download the [[10x_73k files]](https://drive.google.com/open?id=1XnGkSamF5DiwnpHFG0OexmoqAwe27ucR) into the `data` folder.
+
 The datasets will be generated using `python make_datsets.py`
  
 ## Usage
@@ -29,12 +29,12 @@ The same function can be used for `CNET.py`, `DCN.py`, `DEC.py` and `IDEC.py`
 The results will be saved for example in `$DATASET/save/save-cm-rand.npz`.
 
 That archive contains 12 files: 
-    - `llk` value of the loss,
-    - `wgt` weights of the trained network, 
-    - `lbl` predicted labels, 
-    - `klbl `predicted labels by k-means on the embedding,
-    - `ari`,`nmi`,`acc` Adjusted Rand index, Normalized Mutual Information and Accuracy of the predicted label (`lbl`),
-    - `kari`,`knmi`,`kacc` Adjusted Rand index, Normalized Mutual Information and Accuracy of the predicted label by k-means (`klbl`),
-    - `epc` Duration of the training.
+ - `llk` value of the loss,
+ - `wgt` weights of the trained network, 
+ - `lbl` predicted labels, 
+ - `klbl `predicted labels by k-means on the embedding,
+ - `ari`,`nmi`,`acc` Adjusted Rand index, Normalized Mutual Information and Accuracy of the predicted label (`lbl`),
+ - `kari`,`knmi`,`kacc` Adjusted Rand index, Normalized Mutual Information and Accuracy of the predicted label by k-means (`klbl`),
+ - `epc` Duration of the training.
 
 To train DKM, `dkm.py` accordingly to the indications provided in the [[authors' repository]](https://github.com/MaziarMF/deep-k-means).
