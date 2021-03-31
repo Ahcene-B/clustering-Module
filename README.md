@@ -24,7 +24,7 @@ To train the clustering module (CM) on a dataset $DATASET with $INITIALIZATION={
 python CM.py $DATASET $INITIALIZATION -b BATCHSIZE -e EPOCH -p PRETRAINING_EPOCH -r NB_RUNS -g GPU_ID
 ```
 
-The same function can be used for `CNET.py`, `DCN.py`, `DEC.py` and `IDEC.py`
+The same function can be used for `AECM.py`, `DCN.py`, `DEC.py` and `IDEC.py`
 
 The results will be saved for example in `$DATASET/save/save-cm-rand.npz`.
 
