@@ -75,7 +75,7 @@ del LOAD
 
 N,D  = DATA.shape
 K    = int( TRUE.max()+1 )
-OUT = int(CNET_UNIF[NAME]['OUT'])
+OUT = int(AECM_UNIF[NAME]['OUT'])
 
 if INIT == 'pre':
     AE = np.load(NAME+'/save/save-ae.npz',allow_pickle=True)['wgt']

@@ -59,7 +59,7 @@ CM_UNIF = {
     },
 }
 
-CNET_UNIF = {
+AECM_UNIF = {
     "MNIST":{
         "OUT":      10,
         "BETA":     5,

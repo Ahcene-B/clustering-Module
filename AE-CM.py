@@ -59,7 +59,7 @@ args = parser.parse_args()
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ["CUDA_VISIBLE_DEVICES"]= args.gpu
 
-from Module.module_DEC import DEC
+from Module.module_AECM import AECM
 from Module.utils import *
 
 ############################################################################
@@ -76,6 +76,10 @@ del LOAD
 N,D  = DATA.shape
 K    = int( TRUE.max()+1 )
 OUT = int(AECM_UNIF[NAME]['OUT'])
+BETA = AECM_UNIF[NAME]['BETA']
+ALPHA = AECM_UNIF[NAME]['CC']
+BATCH = int(AECM_UNIF[NAME]['BATCH'])
+LBD = 1. # CNET_UNIF[NAME]['LBD']
 
 if INIT == 'pre':
     AE = np.load(NAME+'/save/save-ae.npz',allow_pickle=True)['wgt']
@@ -99,7 +103,7 @@ ARCHI = ([('input',D),
         ])
 
 if SAVE:
-    FNAME = NAME+'/save/save-dec-'+ INIT + '.npz'
+    FNAME = NAME+'/save/save-aecm-'+ INIT + '.npz'
         
     if not os.path.exists(NAME+'/'):
         os.mkdir(NAME+'/')
@@ -110,17 +114,6 @@ if SAVE:
         print('Already done.')
         sys.exit()
         raise ValueError
-    
-UPDATE_P = {
-    'MNIST': 140,
-    'FMNIST': 140,
-    'USPS': 30,
-    'CIFAR10': 140,
-    'R10K': 20,
-    '20NEWS': 20,
-    '10X73K': 20,
-    'PENDIGIT': 20,
-    }
 
 LLK = []
 LBL,kLBL = [],[]
@@ -129,14 +122,13 @@ kARI,kNMI,kACC = [],[],[]
 WGT,EPC = [],[]
 
 for r in range(args.runs):
-    print( "\n>>> "+NAME+": DEC+"+INIT+" RUN=",r+1)
-    MODEL = DEC( 
+    print( "\n>>> "+NAME+": AECM+"+INIT+" RUN=",r+1)
+    MODEL = AECM( 
         architecture=ARCHI, 
         n_clusters=K, 
-        isIDEC=False,
         true_labels=TRUE, 
-        alpha=1., 
-        gamma=.1
+        beta=BETA, 
+        lbd=LBD
     )
     
     if INIT == 'pre':
@@ -144,21 +136,28 @@ for r in range(args.runs):
             x=DATA, 
             y=TRUE,
             wgt=AE[r],
+            alpha=ALPHA,
+            batch_size=BATCH, 
+            epoch_size=100, 
+            optimizer_name='adam|3', 
+            optimizer_step=int( 150*(N/BATCH) ),
+            print_interval=50, 
             verbose=True,
         )
 
     epc = MODEL.fit( 
         x=DATA,
-        update_p=UPDATE_P[NAME],
-        batch_size=args.batch, 
-        epoch_size=args.epoch, 
-        optimizer_name='adam_decay|3',
-        optimizer_step=int( 150 * (N/args.batch) ),
         y=TRUE,
+        alpha=ALPHA, 
+        batch_size=BATCH, 
+        epoch_size=args.epoch, 
+        optimizer_name='adam|3' if NAME not in ['CIFAR10','10X73K','USPS','PENDIGIT','R10K'] else 'adam_decay|3', 
+        optimizer_step=int( 150*(N/BATCH) ),
+        print_interval=50, 
+        verbose=True
     )
     
-    P = MODEL.get_p_q(DATA)[0]
-    LLK.append( MODEL.loss(DATA,P) )
+    LLK.append( MODEL.loss(DATA,0) )
     
     LBL.append( MODEL.predict(DATA) )
     ARI.append( ari( TRUE, LBL[-1] ) )

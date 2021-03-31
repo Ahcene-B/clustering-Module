@@ -68,7 +68,7 @@ del LOAD
 
 N,D  = DATA.shape
 K    = int( TRUE.max()+1 )
-OUT = int(CNET_UNIF[NAME]['OUT'])
+OUT = int(AECM_UNIF[NAME]['OUT'])
 
 
 ARCHI = ([('input',D),

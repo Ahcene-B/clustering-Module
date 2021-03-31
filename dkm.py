@@ -82,7 +82,7 @@ input_size = data.shape[1]
 hidden_1_size = 500
 hidden_2_size = 500
 hidden_3_size = 2000
-embedding_size = int(CNET_UNIF[ args.dataset.upper() ]['OUT']) # n_clusters # 
+embedding_size = int(AECM_UNIF[ args.dataset.upper() ]['OUT']) # n_clusters # 
 dimensions = [hidden_1_size, hidden_2_size, hidden_3_size, embedding_size, # Encoder layer dimensions
               hidden_3_size, hidden_2_size, hidden_1_size, input_size] # Decoder layer dimensions
 activations = [tf.nn.relu, tf.nn.relu, tf.nn.relu, None, # Encoder layer activations
@@ -136,9 +136,9 @@ print("Hyperparameters...")
 print("lambda =", lambda_)
 
 if pretrain:
-    AE = np.load('../Clustering_CNET/'+args.dataset.upper()+'/save-ae/save-ae.npz',allow_pickle=True)['wgt']
+    AE = np.load(args.dataset.upper()+'/save/save-ae.npz',allow_pickle=True)['wgt']
 
-FNAME = args.dataset.upper()+'/save/save3-dkm-'+('rand' if annealing else ( 'pre' if pretrain else 'unif') )+'-lbd='+str(lambda_)
+FNAME = args.dataset.upper()+'/save/save-dkm-'+('rand' if annealing else ( 'pre' if pretrain else 'unif') )+'-lbd='+str(lambda_)
 print(FNAME)
 
 # Define the alpha scheme depending on if the approach includes annealing/pretraining
